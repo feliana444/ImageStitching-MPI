@@ -1,5 +1,9 @@
 # ImageStitching-MPI
+Operating System yang digunakan adalah ubuntu server 22.04
+
 ## Topologi
+![Topologi](https://github.com/feliana444/ImageStitching-MPI/assets/145323449/263a5fa1-220e-46f2-8959-34ba6c33901f)
+
 ## 1. Install MPI
 ```sh
 sudo apt-get install -y mpich-doc mpich
@@ -14,18 +18,21 @@ output <br>
 cek alamat ip komputer menggunakan perintah `ip a` `if config` `hostname -  I` <br>
 **MASTER**
 ```sh
-192.168.135.181 danserver
-192.168.135.39 slave
+192.168.135.181 master
+192.168.135.39 slave1
 192.168.135.75 slave2
 192.168.135.168 slave3
 ```
 **SLAVE**
 ```sh
-192.168.135.181 danserver
-192.168.135.39 slave
+192.168.135.181 master
+192.168.135.39 slave1
 ```
-### 2.2 Konfigurasi SSH
-    copy id
+### 2.2 Konfigurasi SSH <br>
+Lakukan pada semua slave
+```sh
+ssh-copy-id <nama user>@<slave>
+```
 
 ## 3. Install numpy, imutils dan opencv
 ### 3.1 numpy
@@ -43,7 +50,7 @@ git clone https://github.com/kaliadi/image-Stitching.git\
 ## 5. Copy Seluruh File ke dalam Slave
 ### 5.1 Copy File
 ```sh
-scp image-Stiching/* mpiuser@slave:/home/mpiuser/
+scp image-Stiching/* mpiuser@slave1:/home/mpiuser/
 scp image-Stiching/* mpiuser@slave2:/home/mpiuser/
 scp image-Stiching/* mpiuser@slave3:/home/mpiuser/
 ```
@@ -61,7 +68,8 @@ scp image-Stiching/* mpiuser@slave3:/home/mpiuser/
 ![WhatsApp Image 2023-11-14 at 9 08 26 PM (1)](https://github.com/feliana444/ImageStitching-MPI/assets/145323449/ec3cfff3-5c5d-4488-b932-39097f1245bb)
 ![WhatsApp Image 2023-11-14 at 9 08 26 PM (2)](https://github.com/feliana444/ImageStitching-MPI/assets/145323449/9b9d8ae3-9f0e-484a-99c6-c485242b49d7)
 ### 7.2 Waktu Running
-![image](https://github.com/feliana444/ImageStitching-MPI/assets/145323449/48f457a7-3f7f-4b11-b85e-529dc3b22d40)
+    mpiexec -n <jumlah slave> -host master,slave1,slave2,slave3 python3 /home/mpiuser/image-Stitching/image_s.py -i /home/mpiuser/image-Stitching/images -o outputmulti.png
+![image](https://github.com/feliana444/ImageStitching-MPI/assets/145323449/8f9214f2-bd1b-4822-ba67-5e0c13d328ad)
 ### 7.3 Melihat Hasil Output <br>
 Tampilan jika output sudah tersimpan
 ![image](https://github.com/feliana444/ImageStitching-MPI/assets/145323449/3448576c-6cd8-45e4-80cd-17398e9847ad)
